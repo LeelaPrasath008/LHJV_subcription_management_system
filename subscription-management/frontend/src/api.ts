@@ -30,7 +30,8 @@ export async function api<T>(path: string, opts: { method?: string; body?: unkno
   if (!res.ok) {
     let data: { message?: string; fieldErrors?: Record<string, string> } = {};
     try { data = await res.json(); } catch { /* no body */ }
-    throw new ApiError(res.status, data.message ?? res.statusText, data.fieldErrors ?? {});
+    const fallback = res.status === 403 ? 'Access forbidden. Check the backend security configuration or account permissions.' : res.statusText;
+    throw new ApiError(res.status, data.message ?? fallback, data.fieldErrors ?? {});
   }
   if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { ErrorBanner, Field } from '../components/ui';
 
@@ -33,6 +33,7 @@ export default function Login() {
         <Field label="Username"><input className="input" value={username} onChange={(e) => setUsername(e.target.value)} autoFocus autoComplete="username" /></Field>
         <Field label="Password"><input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" /></Field>
         <button className="btn-primary mt-2 w-full" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
+        <p className="mt-5 text-center text-sm text-slate-600">New to SubscriptIQ? <Link className="font-semibold text-indigo-600 hover:underline" to="/register">Create an account</Link></p>
       </form>
     </div>
   );

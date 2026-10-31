@@ -12,6 +12,10 @@ public final class Dto {
     private Dto() {}
 
     public record LoginRequest(@NotBlank String username, @NotBlank String password) {}
+    public record RegisterRequest(
+            @NotBlank @Size(min = 3, max = 30) @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "Use letters, numbers, dots, underscores or hyphens") String username,
+            @NotBlank @Size(min = 2, max = 80) String fullName,
+            @NotBlank @Size(min = 8, max = 72) String password) {}
     public record LoginResponse(String token, String username, String fullName, String role) {}
     public record SubscriptionRequest(@NotNull Long customerId, @NotNull Long planId, @NotNull LocalDate startDate,
                                       LocalDate endDate, boolean autoRenew) {}

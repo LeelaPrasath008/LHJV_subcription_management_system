@@ -30,6 +30,19 @@ class ApiSecurityTest {
                 .content("{\"username\":\"admin\",\"password\":\"wrong\"}")).andExpect(status().isUnauthorized());
     }
 
+    @Test void registrationCreatesStaffAccountAndRejectsDuplicateUsername() throws Exception {
+        String payload = "{\"username\":\"new_hackathon_user\",\"fullName\":\"New Hackathon User\",\"password\":\"StrongPass123\"}";
+        String response = mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.role").value("STAFF"))
+                .andExpect(jsonPath("$.token").isNotEmpty())
+                .andReturn().getResponse().getContentAsString();
+        String token = "Bearer " + om.readTree(response).get("token").asText();
+        mvc.perform(get("/api/customers").header("Authorization", token)).andExpect(status().isOk());
+        mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(payload))
+                .andExpect(status().isConflict());
+    }
+
     @Test void protectedEndpointsNeedToken() throws Exception {
         mvc.perform(get("/api/customers")).andExpect(status().isUnauthorized());
     }
