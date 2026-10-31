@@ -13,10 +13,15 @@ public enum BillingCycle {
 
     public int getMonths() { return months; }
 
-    public LocalDate addTo(LocalDate date) { return date.plusMonths(months); }
+    public LocalDate addTo(LocalDate date) {
+        return date == null ? null : date.plusMonths(months);
+    }
 
     /** Price normalised to a per-month amount (used for MRR). */
     public BigDecimal monthlyEquivalent(BigDecimal price) {
+        if (price == null) {
+            return null;
+        }
         return price.divide(BigDecimal.valueOf(months), 2, RoundingMode.HALF_UP);
     }
 }
