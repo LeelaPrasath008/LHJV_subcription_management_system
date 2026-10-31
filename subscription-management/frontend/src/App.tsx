@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Customers from './pages/Customers';
+import CustomerProfile from './pages/CustomerProfiles';
 import Plans from './pages/Plans';
 import Subscriptions from './pages/Subscriptions';
 import Invoices from './pages/Invoices';
@@ -26,6 +27,7 @@ export default function App() {
       <Route element={<Protected><Layout /></Protected>}>
         <Route index element={<Dashboard />} />
         <Route path="customers" element={<Customers />} />
+        <Route path="customers/:id" element={<CustomerProfile />} />
         <Route path="plans" element={<Plans />} />
         <Route path="subscriptions" element={<Subscriptions />} />
         <Route path="invoices" element={<Invoices />} />

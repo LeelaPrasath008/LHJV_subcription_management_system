@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { useAuth } from '../auth';
 import { usePaged } from '../hooks';
@@ -62,6 +63,7 @@ export default function Customers() {
               <td className="td font-medium">{c.name}</td><td className="td">{c.email}</td>
               <td className="td">{c.phone || '—'}</td><td className="td">{c.company || '—'}</td>
               <td className="td space-x-2 text-right">
+                <Link className="btn-ghost btn-sm" to={`/customers/${c.id}`}>View</Link>
                 <button className="btn-ghost btn-sm" onClick={() => open(c)}>Edit</button>
                 {isAdmin && <button className="btn-danger btn-sm" onClick={() => remove(c)}>Delete</button>}
               </td>
