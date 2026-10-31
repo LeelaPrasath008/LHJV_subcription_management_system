@@ -1,5 +1,3 @@
-package com.subscription_management.model;
+package com.subscriptiq.model;
 
-public class InvoiceStatus {
-    
-}
+public enum InvoiceStatus { PENDING, PAID, OVERDUE }
