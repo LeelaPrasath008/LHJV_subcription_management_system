@@ -1,4 +1,4 @@
-package com.subscription_management.security;
+package com.subscriptiq.security;
 
 import com.subscriptiq.repo.UserRepository;
 import org.springframework.security.core.userdetails.*;

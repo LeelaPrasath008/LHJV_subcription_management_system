@@ -1,4 +1,4 @@
-package com.subscription_management;
+package com.subscriptiq;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,14 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableSpringDataWebSupport(
-    pageSerializationMode = PageSerializationMode.VIA_DTO
-)
-public class SubscriptionManagementApplication {
-
+@EnableSpringDataWebSupport(pageSerializationMode = PageSerializationMode.VIA_DTO)
+public class SubscriptIqApplication {
     public static void main(String[] args) {
-        SpringApplication.run(
-            SubscriptionManagementApplication.class, args
-        );
+        SpringApplication.run(SubscriptIqApplication.class, args);
     }
 }
