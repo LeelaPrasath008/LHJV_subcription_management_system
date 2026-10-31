@@ -17,7 +17,7 @@ public class MaintenanceService {
     private final InvoiceRepository invoices;
     private final SubscriptionService subscriptionService;
 
-    /** Cheap, idempotent: flags overdue invoices and expires lapsed non-auto-renew subscriptions. */
+    /** Flags overdue invoices and expires lapsed non-auto-renew subscriptions. */
     @Transactional
     public void refreshStatuses() {
         LocalDate today = LocalDate.now();
@@ -25,7 +25,8 @@ public class MaintenanceService {
         invoices.markOverdue(InvoiceStatus.OVERDUE, InvoiceStatus.PENDING, today);
     }
 
-    /** Runs at startup and nightly: renews auto-renew subscriptions that have reached their end date. */
+    /** Runs at startup and nightly. Transaction is required because refresh operations execute UPDATE queries. */
+    @Transactional
     @Scheduled(cron = "0 0 2 * * *")
     @EventListener(ApplicationReadyEvent.class)
     public void dailyJob() {
@@ -36,8 +37,14 @@ public class MaintenanceService {
                 log.warn("Auto-renew failed for subscription {}: {}", s.getId(), e.getMessage());
             }
         }
+        // This method is called internally, so its own @Transactional annotation alone would not be proxied.
+        // The transaction on dailyJob() ensures the modifying repository queries have a transaction.
         refreshStatuses();
     }
 
-    public MaintenanceService(SubscriptionRepository subs, InvoiceRepository invoices, SubscriptionService subscriptionService) { this.subs = subs; this.invoices = invoices; this.subscriptionService = subscriptionService; }
+    public MaintenanceService(SubscriptionRepository subs, InvoiceRepository invoices, SubscriptionService subscriptionService) {
+        this.subs = subs;
+        this.invoices = invoices;
+        this.subscriptionService = subscriptionService;
+    }
 }
